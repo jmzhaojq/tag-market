@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag Market · 标签超市</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1><i class="fas fa-cube"></i> Tag Market · 标签超市</h1>
+            <button id="toggleDarkMode" class="theme-toggle">
+                <i class="fas fa-sun"></i>
+            </button>
+        </header>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜索标签 / Search Tags...">
+        </div>
+        <div class="category-filter">
+            <button class="category-btn" data-category="anime">作品</button>
+            <button class="category-btn" data-category="general">一般</button>
+            <button class="category-btn" data-category="meta">元数据</button>
+            <button class="category-btn" data-category="setting">场景</button>
+            <button class="category-btn" data-category="other">其他</button>
+            <button class="category-btn" data-category="all">所有标签</button>
+        </div>
+        <div class="subcategory-filter"></div>
+        <div id="tagContainer" class="tag-container"></div>
+    </div>
+    
+    <script>
+        const tagCategories = {
+            anime: {
+                name: "作品",
+                subcategories: [
+                    { name: "原神", nameEn: "Genshin Impact", tags: [
+                        { en: "nahida_(genshin_impact)", zh: "纳西妲" },
+                        { en: "raiden_shogun", zh: "雷电将军" },
+                    ]},
+                    { name: "碧蓝档案", nameEn: "Blue Archive", tags: [
+                        { en: "arisu_(blue_archive)", zh: "爱丽丝" },
+                        { en: "asuna_(blue_archive)", zh: "阿斯娜" },
+                    ]},
+                    { name: "fate系列", nameEn: "Fate Series", tags: [
+                        { en: "saber", zh: "阿尔托莉雅" },
+                        { en: "jeanne_d'arc_(fate)", zh: "贞德" },
+                    ]},
+                    { name: "赛马娘", nameEn: "Uma Musume", tags: [
+                        { en: "umamusume", zh: "赛马娘" },
+                        { en: "daiwa_scarlet", zh: "大和赤骥" },
+                        { en: "agnes_tachyon", zh: "爱丽数码" },
+                    ]},
+                    { name: "VOCALOID", nameEn: "VOCALOID", tags: [
+                        { en: "hatsune_miku", zh: "初音未来" },
+                        { en: "kagamine_rin", zh: "镜音铃" },
+                    ]}
+                ]
+            },
+            general: {
+                name: "一般",
+                subcategories: [
+                    { name: "表情", nameEn: "Expression", tags: [
+                        { en: "smile", zh: "微笑" },
+                        { en: "open_mouth", zh: "张嘴" },
+                        { en: "blush", zh: "脸红" },
+                        { en: "looking_at_viewer", zh: "看着观众" },
+                    ]},
+                    { name: "头发", nameEn: "Hair", tags: [
+                        { en: "long_hair", zh: "长发" },
+                        { en: "short_hair", zh: "短发" },
+                        { en: "blonde_hair", zh: "金发" },
+                        { en: "brown_hair", zh: "棕发" },
+                        { en: "black_hair", zh: "黑发" },
+                        { en: "blue_hair", zh: "蓝发" },
+                    ]},
+                    { name: "眼睛", nameEn: "Eyes", tags: [
+                        { en: "blue_eyes", zh: "蓝眼" },
+                        { en: "red_eyes", zh: "红眼" },
+                        { en: "green_eyes", zh: "绿眼" },
+                        { en: "purple_eyes", zh: "紫眼" },
+                    ]},
+                    { name: "服装", nameEn: "Clothing", tags: [
+                        { en: "school_uniform", zh: "校服" },
+                        { en: "serafuku", zh: "水手服" },
+                        { en: "dress", zh: "连衣裙" },
+                        { en: "swimsuit", zh: "泳装" },
+                        { en: "thighhighs", zh: "过膝袜" },
+                    ]},
+                    { name: "姿势", nameEn: "Pose", tags: [
+                        { en: "sitting", zh: "坐着" },
+                        { en: "standing", zh: "站立" },
+                        { en: "lying", zh: "躺着" },
+                    ]}
+                ]
+            },
+            meta: {
+                name: "元数据",
+                subcategories: [
+                    { name: "图片质量", nameEn: "Image Quality", tags: [
+                        { en: "highres", zh: "高清" },
+                        { en: "absurdres", zh: "超高清" },
+                        { en: "official_art", zh: "官方图" },
+                        { en: "beautiful_detailed", zh: "精致的" },
+                    ]},
+                    { name: "构图", nameEn: "Composition", tags: [
+                        { en: "portrait", zh: "肖像" },
+                        { en: "full_body", zh: "全身" },
+                        { en: "depth_of_field", zh: "景深" },
+                    ]}
+                ]
+            },
+            setting: {
+                name: "场景",
+                subcategories: [
+                    { name: "环境", nameEn: "Environment", tags: [
+                        { en: "outdoors", zh: "户外" },
+                        { en: "sky", zh: "天空" },
+                        { en: "night", zh: "夜晚" },
+                        { en: "sunset", zh: "日落" },
+                        { en: "scenery", zh: "风景" },
+                    ]}
+                ]
+            },
+            other: {
+                name: "其他",
+                subcategories: [
+                    { name: "杂项", nameEn: "Miscellaneous", tags: [
+                        { en: "wallpaper", zh: "壁纸" },
+                        { en: "original", zh: "原创" },
+                    ]}
+                ]    
+            }
+        };
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
