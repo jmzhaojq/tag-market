@@ -5,7 +5,6 @@ This open source project is based on Github copilot AI-assisted generation.
 标签管理的编辑由用户自行添加和修改.
 Editing of tag management is added and modified by the user.
 
-                                                                    感谢使用!
 
 # Tag Market · 标签超市
 
@@ -119,3 +118,5 @@ tag-market/
 - 响应式 CSS
 - 无需数据库
 - 无需服务器
+------------------------------------------------------
+感谢使用!
